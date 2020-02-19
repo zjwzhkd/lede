@@ -237,8 +237,8 @@ start_pdnsd() {
 		max_ttl=1w;
 		timeout=10;
 		neg_domain_pol=on;
-		proc_limit=2;
-		procq_limit=8;
+		proc_limit=4;
+		procq_limit=12;
 		par_queries=1;
 		}
 		server{
@@ -320,6 +320,8 @@ start_redir() {
 			$sscmd -c $CONFIG_FILE $ARG_OTA -f /var/run/ssr-retcp_$i.pid >/dev/null 2>&1
 		done
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Shadowsocks/ShadowsocksR $threads Threads Started!" >>/tmp/ssrplus.log
+		/usr/bin/ss-local -c $CONFIG_FILE -l 1086 -f /var/run/ss-local.pid >/dev/null 2>&1
+		/usr/bin/ss-tunnel -c $CONFIG_FILE -l 2020 -L 127.0.0.1:17020 -f /var/run/ss-tunnel.pid >/dev/null 2>&1
 	elif [ "$stype" == "v2ray" ]; then
 		$sscmd -config /var/etc/v2-ssr-retcp.json >/dev/null 2>&1 &
 		echo "$(date "+%Y-%m-%d %H:%M:%S") $($sscmd -version | head -1) Started!" >>/tmp/ssrplus.log
@@ -532,6 +534,8 @@ stop() {
 	killall -q -9 ssr-server
 	killall -q -9 kcptun-client
 	killall -q -9 srelay
+	killall -q -9 ss-local
+	killall -q -9 ss-tunnel
 	if [ -f /var/run/pdnsd.pid ]; then
 		kill $(cat /var/run/pdnsd.pid) >/dev/null 2>&1
 	else
