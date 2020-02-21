@@ -321,7 +321,9 @@ start_redir() {
 		done
 		echo "$(date "+%Y-%m-%d %H:%M:%S") Shadowsocks/ShadowsocksR $threads Threads Started!" >>/tmp/ssrplus.log
 		/usr/bin/ss-local -c $CONFIG_FILE -l 1086 -f /var/run/ss-local.pid >/dev/null 2>&1
-		/usr/bin/ss-tunnel -c $CONFIG_FILE -l 2020 -L 127.0.0.1:17020 -f /var/run/ss-tunnel.pid >/dev/null 2>&1
+		for i in $(seq 1 $threads); do
+			/usr/bin/ss-tunnel -c $CONFIG_FILE -l 17020 -L 127.0.0.1:17020 -f /var/run/ss-tunnel_$i.pid >/dev/null 2>&1
+		done
 	elif [ "$stype" == "v2ray" ]; then
 		$sscmd -config /var/etc/v2-ssr-retcp.json >/dev/null 2>&1 &
 		echo "$(date "+%Y-%m-%d %H:%M:%S") $($sscmd -version | head -1) Started!" >>/tmp/ssrplus.log
