@@ -158,6 +158,7 @@ start() {
 			else
 				switch_proxy $CURRENT_SERVER
 				normal_flag=1
+				server_locate=0
 				echo "$(date "+%Y-%m-%d %H:%M:%S") Try restart current server." >>/tmp/ssrplus.log
 			fi
 		else
