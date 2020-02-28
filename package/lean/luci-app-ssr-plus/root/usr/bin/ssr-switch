@@ -136,7 +136,7 @@ start() {
 				echo "$(date "+%Y-%m-%d %H:%M:%S") switch to default ["$(uci_get_by_name $CURRENT_SERVER server)"] proxy!" >>/tmp/ssrplus.log
 				continue
 			else
-				echo "$(date "+%Y-%m-%d %H:%M:%S") Main server is NOT avilable.Continue using current server." >>/tmp/ssrplus.log
+				echo "$(date "+%Y-%m-%d %H:%M:%S") Main server is NOT avilable.Continue using current server ["$(uci_get_by_name $CURRENT_SERVER server)"]." >>/tmp/ssrplus.log
 			fi
 		fi
 		#判断当前代理是否正常
@@ -154,16 +154,16 @@ start() {
 				CURRENT_SERVER=$ENABLE_SERVER
 				switch_proxy $CURRENT_SERVER
 				normal_flag=1
-				echo "$(date "+%Y-%m-%d %H:%M:%S") ShadowsocksR server switch OK" >>/tmp/ssrplus.log
+				echo "$(date "+%Y-%m-%d %H:%M:%S") ShadowsocksR server ["$(uci_get_by_name $CURRENT_SERVER server)"] switch OK" >>/tmp/ssrplus.log
 			else
 				switch_proxy $CURRENT_SERVER
 				normal_flag=1
 				server_locate=0
-				echo "$(date "+%Y-%m-%d %H:%M:%S") Try restart current server." >>/tmp/ssrplus.log
+				echo "$(date "+%Y-%m-%d %H:%M:%S") Try restart current server ["$(uci_get_by_name $CURRENT_SERVER server)"]." >>/tmp/ssrplus.log
 			fi
 		else
 			normal_flag=0
-			echo "$(date "+%Y-%m-%d %H:%M:%S") ShadowsocksR No Problem." >>/tmp/ssrplus.log
+			echo "$(date "+%Y-%m-%d %H:%M:%S") ShadowsocksR server ["$(uci_get_by_name $CURRENT_SERVER server)"] No Problem." >>/tmp/ssrplus.log
 		fi
 	done
 }
